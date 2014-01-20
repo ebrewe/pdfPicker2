@@ -20,7 +20,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
     
     $scope.titles = "MNR*MNR/AFFM*MNR/About*MNR/Aggregates*MNR/Aquatics*MNR/Bearwise*MNR/Biodiversity*MNR/CLTIP*MNR/CNFER*MNR/ClimateChange*MNR/ContactUs*MNR/CrownLand*MNR/EmergencyManagement*MNR/Enforcement*MNR/FW*MNR/FarNorth*MNR/Forests*MNR/GeographicNames*MNR/GlobalFiles*MNR/GreatLakes*MNR/HomePage*MNR/KidsFish*MNR/LIO*MNR/LUEPS*MNR/LetsFish*MNR/NESI*MNR/NHIC*MNR/NWSI*MNR/Newsroom*MNR/OC*MNR/OFRI*MNR/OGSR*MNR/OMLC*MNR/OSG*MNR/OntarioWood*MNR/Parks*MNR/Rabies*MNR/Renewable*MNR/SORR*MNR/Species*MNR/Water*MNR/Wildlife*MNR/Youth*".split("*");
     
-    $scope.currentTitle = $scope.titles[0];
+    $scope.currentTitle = "All";
     
     $scope.$watch('currentTitle', function(newValue, oldValue){
       $scope.fPdfs = $scope.filterPdfs($scope.pdfs, $scope.currentTitle);
@@ -32,18 +32,31 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
     $scope.filterPdfs = function(list, filter){
       var rets = [];
       if(list){
-        angular.forEach(list, function(value, key){
-          if(value.hasOwnProperty('Account') && value.Account == filter){
-            value.toAdd = true;
-            /*value.Description = $scope.getExcerpt(value.Description, $scope.excerptLimit, true)     
-            value.Title = $scope.getExcerpt(value.Title, $scope.excerptLimit, true)  
-            value.Keywords = $scope.getExcerpt(value.Keywords, $scope.excerptLimit, true) */  
-            if(!value.Accessible){
-              value.Accessible = 'false';
-            }
-            rets.push(value);
-          }
-        });
+				if(filter == 'All'){
+				
+				  angular.forEach(list, function(value, key){
+							value.toAdd = true;
+							
+							if(!value.Accessible){
+								value.Accessible = 'false';
+							}
+							rets.push(value);
+					});
+					
+				}else{
+					angular.forEach(list, function(value, key){
+						if(value.hasOwnProperty('Account') && value.Account == filter){
+							value.toAdd = true;
+							/*value.Description = $scope.getExcerpt(value.Description, $scope.excerptLimit, true)     
+							value.Title = $scope.getExcerpt(value.Title, $scope.excerptLimit, true)  
+							value.Keywords = $scope.getExcerpt(value.Keywords, $scope.excerptLimit, true) */  
+							if(!value.Accessible){
+								value.Accessible = 'false';
+							}
+							rets.push(value);
+						}
+					});
+				}
       }
       $scope.setupPages(rets.length);
       
@@ -80,7 +93,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
     $scope.addList = []
     
     $scope.addAdded = function( list ){
-    
+       console.log( $scope.addList);
     
 			 angular.forEach(list, function(lv, lk){
 			   $scope.fPdfs[lk].toAdd = true; 
@@ -119,6 +132,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
         $scope.addList.push(pdf);
         $scope.addList.sort($scope.sortList);
       }
+      console.log('added to al', $scope.addList);
     }
     
     $scope.removePdf = function(pdf){
@@ -158,6 +172,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		}
 		
 		$scope.rgetCSV = function(){
+		    console.log( 'hit save', $scope.addList );
 		  /* rget is Reconciling get. Get the file,
 		  check it against the current selected list and merge */
 		  var gurl = 'app/getCSV.php',
@@ -175,9 +190,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		     * loop through names and remove duplicates from 
 		     * selections.
 		     * combine remainder with new list*/
-		     
 		    var addBackup = $scope.addList;
-		    for(var i in addBackup)
 		    
 		    for( var i = 0, j = names.length; i < j; i++){
 		      for(var n = 0, m = addBackup.length; n < m; n++){
@@ -202,11 +215,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		    $scope.addAdded($scope.fPdfs);
 		    
 		    
-		    
-		    //now save
-		    console.log ('now saving');
-		    $scope.saveCSV()
-		    
+		    		    
 		  });
 		}
 		
@@ -215,6 +224,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		  
 		  var purl = 'app/putCSV.php',
 		  postData = $scope.addList;
+		  
 		  $http({
             url: purl,
             method: "POST",
@@ -222,6 +232,10 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function (data, status, headers, config) {
                 console.log(data);
+                //trigger save message
+                $('.save-message').fadeToggle(function(){
+                  $('.save-message').fadeToggle(2000);
+                })
             }).error(function (data, status, headers, config) {
                 console.log(status);
             });
@@ -262,14 +276,14 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		$scope.accountVisible = false
 		$scope.subjectVisible = false
 		$scope.fileNameVisible = true
-		$scope.stellentNameVisible = true
+		$scope.stellentNameVisible = false
 		$scope.titleVisible = true
 		$scope.descriptionVisible = true
 		$scope.ownerVisible = true
 		$scope.accessibleVisible = true
-		$scope.contentPlanVisible = true
-		$scope.otherLanguageVisible = true
-		$scope.keywordsVisible = true
+		$scope.contentPlanVisible = false
+		$scope.otherLanguageVisible = false
+		$scope.keywordsVisible = false
 		$scope.publishedVisible = true
 		$scope.modifiedVisible = true
 		
@@ -299,6 +313,9 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 	  }
 	  
 	  $scope.$on('LastElem', function(e){
+	  
+       console.log( 'ng-repeat done', $scope.addList);
+       
 	    $('.td-excerpt').each( function(){
 	      $(this).on('click', '.more-content', function(ev){
 	        ev.stopPropagation();
@@ -315,6 +332,12 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 	    });
 	  })
 		
+		
+		/*watch addlist changes*/
+		$scope.$watch('addList', function(newValue, oldValue){
+		  console.log('watchchange', newValue, oldValue);
+		  console.log(oldValue.length, newValue.length);
+		})
   
   }])
   .directive('table', function(){
