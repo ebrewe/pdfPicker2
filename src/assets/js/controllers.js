@@ -259,14 +259,14 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		$scope.accountVisible = false
 		$scope.subjectVisible = false
 		$scope.fileNameVisible = true
-		$scope.stellentNameVisible = true
+		$scope.stellentNameVisible = false
 		$scope.titleVisible = true
 		$scope.descriptionVisible = true
 		$scope.ownerVisible = true
 		$scope.accessibleVisible = true
-		$scope.contentPlanVisible = true
-		$scope.otherLanguageVisible = true
-		$scope.keywordsVisible = true
+		$scope.contentPlanVisible = false
+		$scope.otherLanguageVisible = false
+		$scope.keywordsVisible = false
 		$scope.publishedVisible = true
 		$scope.modifiedVisible = true
 		
