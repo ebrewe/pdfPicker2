@@ -4,6 +4,7 @@
 
 $green: #78d552;
 $red: #d14e42;
+$yellow: #f9eec6;
 
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,700);
 
@@ -75,6 +76,25 @@ body {
   &.visible{
     display:block;
   
+  }
+}
+
+.save-buttons{
+  
+  position:relative;
+  
+  .save-message {
+    display:none; 
+    position:absolute; 
+    top:-50px; 
+    padding:10px 20px;
+    border-radius:2px; 
+    background: $yellow;
+    border:1px solid darken($yellow, 13%);
+    
+    i{
+      color:$green;
+    }
   }
 }
 
