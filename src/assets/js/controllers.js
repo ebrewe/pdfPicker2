@@ -20,7 +20,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
     
     $scope.titles = "MNR*MNR/AFFM*MNR/About*MNR/Aggregates*MNR/Aquatics*MNR/Bearwise*MNR/Biodiversity*MNR/CLTIP*MNR/CNFER*MNR/ClimateChange*MNR/ContactUs*MNR/CrownLand*MNR/EmergencyManagement*MNR/Enforcement*MNR/FW*MNR/FarNorth*MNR/Forests*MNR/GeographicNames*MNR/GlobalFiles*MNR/GreatLakes*MNR/HomePage*MNR/KidsFish*MNR/LIO*MNR/LUEPS*MNR/LetsFish*MNR/NESI*MNR/NHIC*MNR/NWSI*MNR/Newsroom*MNR/OC*MNR/OFRI*MNR/OGSR*MNR/OMLC*MNR/OSG*MNR/OntarioWood*MNR/Parks*MNR/Rabies*MNR/Renewable*MNR/SORR*MNR/Species*MNR/Water*MNR/Wildlife*MNR/Youth*".split("*");
     
-    $scope.currentTitle = $scope.titles[0];
+    $scope.currentTitle = "All";
     
     $scope.$watch('currentTitle', function(newValue, oldValue){
       $scope.fPdfs = $scope.filterPdfs($scope.pdfs, $scope.currentTitle);
@@ -32,18 +32,31 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
     $scope.filterPdfs = function(list, filter){
       var rets = [];
       if(list){
-        angular.forEach(list, function(value, key){
-          if(value.hasOwnProperty('Account') && value.Account == filter){
-            value.toAdd = true;
-            /*value.Description = $scope.getExcerpt(value.Description, $scope.excerptLimit, true)     
-            value.Title = $scope.getExcerpt(value.Title, $scope.excerptLimit, true)  
-            value.Keywords = $scope.getExcerpt(value.Keywords, $scope.excerptLimit, true) */  
-            if(!value.Accessible){
-              value.Accessible = 'false';
-            }
-            rets.push(value);
-          }
-        });
+				if(filter == 'All'){
+				
+				  angular.forEach(list, function(value, key){
+							value.toAdd = true;
+							
+							if(!value.Accessible){
+								value.Accessible = 'false';
+							}
+							rets.push(value);
+					});
+					
+				}else{
+					angular.forEach(list, function(value, key){
+						if(value.hasOwnProperty('Account') && value.Account == filter){
+							value.toAdd = true;
+							/*value.Description = $scope.getExcerpt(value.Description, $scope.excerptLimit, true)     
+							value.Title = $scope.getExcerpt(value.Title, $scope.excerptLimit, true)  
+							value.Keywords = $scope.getExcerpt(value.Keywords, $scope.excerptLimit, true) */  
+							if(!value.Accessible){
+								value.Accessible = 'false';
+							}
+							rets.push(value);
+						}
+					});
+				}
       }
       $scope.setupPages(rets.length);
       
