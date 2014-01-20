@@ -1,0 +1,189 @@
+* {
+  box-sizing:border-box; 
+}
+
+$green: #78d552;
+$red: #d14e42;
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,700);
+
+
+@mixin prefix($prop, $value){
+  -webkit-#{$prop}: $value; -moz-#{$prop}: $value; -o-#{$prop}: $value; -ms-#{$prop}: $value;
+}
+
+body {
+  background: whiteSmoke; 
+  font-family: 'Roboto', arial, helvetica, sans-serif; 
+}
+
+.spinner{
+  padding-top:50px; 
+  p{
+    color:#5d5d5d;
+    font-size:36px; 
+    font-weight:100; 
+    text-align:center;
+    
+    /*span {
+      display:block; 
+      width:100%;
+      text-align:center;
+      font-size:24px; 
+      font-weight: 400; 
+    }*/
+  }
+}
+
+@-webkit-keyframes Roll{
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(359deg);}
+}
+@-ms-keyframes Roll{
+  0% { -ms-transform: rotate(0deg); }
+  100% { -ms-transform: rotate(359deg);}
+}
+@-o-keyframes Roll{
+  0% { -o-transform: rotate(0deg); }
+  100% { -o-transform: rotate(359deg);}
+}
+@-moz-keyframes Roll{
+  0% { -moz-transform: rotate(0deg); }
+  100% { -moz-transform: rotate(359deg);}
+}
+@keyframes Roll{
+  0% { -transform: rotate(0deg); }
+  100% { -transform: rotate(359deg);}
+}
+
+#loading{
+  display:block; 
+  margin:20px auto;
+  width: 50px;
+  height:50px; 
+  border: 3px solid rgba(45,45,45,0.2); 
+  border-radius:50%;
+  border-top-color:rgb(145,145,145); 
+  @include prefix(animation, Roll 1s infinite linear);
+}
+
+.search {
+  display:none;
+  opacity:0;
+  padding: 27px 20px 40px;
+  
+  &.visible{
+    display:block;
+  
+  }
+}
+
+tr{
+  border-color:gray;
+  background:white;
+  -webkit-transition: background .2s linear;
+  
+  &.odd{
+    background:#f8f8f8;
+    &:hover {
+      background:lightYellow;
+    }
+  }
+  
+  &.added {
+    background:lighten($green, 32%); 
+  }
+  
+  &:focus,
+  &:hover {
+    background:lightYellow; 
+  }
+}
+
+table{
+  opacity:0;
+  
+  &.visible{
+  }
+}
+
+thead tr {
+  background:white!important;
+}
+
+
+td {
+  position:relative;
+  max-width:120px;
+  font-size:0.9em; 
+  overflow:hidden;
+  border-color:#ebebeb;
+  border-bottom-style:solid;
+  border-bottom-width:1px; 
+  color:#4d4d4d;
+  
+  i {
+		font-size:24px; 
+		margin-left:10px;
+		cursor:pointer; 
+		
+		
+		&.fa-plus-circle {
+		  color:$green;
+		  
+		  &:focus,
+		  &:hover {
+		    color: darken($green, 11%);
+		  }
+		}
+		
+		&.fa-times-circle{
+		  color:$red;
+		  
+		  &:focus,
+		  &:hover {
+		    color: darken($red, 11%);
+		  }
+		}
+  }
+}
+
+a.add-toggle {
+  display:block;
+}
+
+.fa-eye-slash {
+  color:desaturate( darken($red, 7%), 7%);
+}
+
+.sort-icon {
+  display:inline;
+  padding: 0 3px;
+	height: 26px;
+	vertical-align: top;
+	line-height: 26px!important;
+}
+
+.more-content{
+  cursor:pointer; 
+}
+.td-excerpt a{
+  display:block; 
+  
+  i {
+    font-size:12px; 
+  }
+}
+
+#pagination-footer{
+  @include prefix(transition, opacity .2s linear);
+  
+  &.hidden{
+    display:none; 
+    opacity:0;
+  }
+  &.visible{
+    display:block; 
+    opacity:1;
+  }
+}
