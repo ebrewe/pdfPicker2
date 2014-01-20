@@ -232,6 +232,10 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function (data, status, headers, config) {
                 console.log(data);
+                //trigger save message
+                $('.save-message').fadeToggle(function(){
+                  $('.save-message').fadeToggle(2000);
+                })
             }).error(function (data, status, headers, config) {
                 console.log(status);
             });
