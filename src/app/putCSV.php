@@ -47,7 +47,7 @@
 			}
   }
   $flist = array_filter($list);
-  print_r($flist);
+ // print_r($flist);
   
   $fp = fopen('data/included_pdfs.csv', 'w');
 

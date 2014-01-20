@@ -80,7 +80,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
     $scope.addList = []
     
     $scope.addAdded = function( list ){
-    
+       console.log( $scope.addList);
     
 			 angular.forEach(list, function(lv, lk){
 			   $scope.fPdfs[lk].toAdd = true; 
@@ -119,6 +119,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
         $scope.addList.push(pdf);
         $scope.addList.sort($scope.sortList);
       }
+      console.log('added to al', $scope.addList);
     }
     
     $scope.removePdf = function(pdf){
@@ -158,6 +159,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		}
 		
 		$scope.rgetCSV = function(){
+		    console.log( 'hit save', $scope.addList );
 		  /* rget is Reconciling get. Get the file,
 		  check it against the current selected list and merge */
 		  var gurl = 'app/getCSV.php',
@@ -175,9 +177,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		     * loop through names and remove duplicates from 
 		     * selections.
 		     * combine remainder with new list*/
-		     
 		    var addBackup = $scope.addList;
-		    for(var i in addBackup)
 		    
 		    for( var i = 0, j = names.length; i < j; i++){
 		      for(var n = 0, m = addBackup.length; n < m; n++){
@@ -202,11 +202,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		    $scope.addAdded($scope.fPdfs);
 		    
 		    
-		    
-		    //now save
-		    console.log ('now saving');
-		    $scope.saveCSV()
-		    
+		    		    
 		  });
 		}
 		
@@ -300,6 +296,9 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 	  }
 	  
 	  $scope.$on('LastElem', function(e){
+	  
+       console.log( 'ng-repeat done', $scope.addList);
+       
 	    $('.td-excerpt').each( function(){
 	      $(this).on('click', '.more-content', function(ev){
 	        ev.stopPropagation();
@@ -316,6 +315,12 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 	    });
 	  })
 		
+		
+		/*watch addlist changes*/
+		$scope.$watch('addList', function(newValue, oldValue){
+		  console.log('watchchange', newValue, oldValue);
+		  console.log(oldValue.length, newValue.length);
+		})
   
   }])
   .directive('table', function(){
