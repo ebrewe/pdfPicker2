@@ -96,13 +96,16 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
     $scope.addList = []
     
     $scope.addAdded = function( list ){
-       console.log( $scope.addList);
+       console.log( 'addList: ', $scope.addList);
     
 			 angular.forEach(list, function(lv, lk){
 			   $scope.fPdfs[lk].toAdd = true; 
 					angular.forEach($scope.addList, function(v, k){
 						if( lv.Name == v.Name){
 							$scope.fPdfs[lk].toAdd = false;
+							if( v.Accessible==1 ){
+							  $scope.fPdfs[lk].Accessible = true; 
+							}
 							$scope.addList[k] = $scope.fPdfs[lk]; 
 						}
 					});
@@ -157,19 +160,21 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		}
 		
 		$scope.getCSV = function(){
-		  var gurl = 'app/getCSV.php',
-		  names = [];
+		  var gurl = 'app/getCSV.php';
 		  $http.get(gurl).success( function(data){
-		     names = data.split('*'); 
-				 $scope.addList.length = 0; 
-				 $scope.addAdded($scope.fPdfs);
-		     for( var i = 0, j = names.length; i < j; i++){
-		       if( names[i] != "" && names[i] !== 'Name' && names[i] !== "*"){
-		         var pdfItem = {};
-		         pdfItem.Name = names[i];
-		         $scope.addList.push(pdfItem);
-		       }
+		     var csvdata = data.split('*'),
+		     names = [];
+		  
+		     for( var i = 0, j= csvdata.length; i<j; i++){
+		     	  var dataArr = csvdata[i].split('@');
+		     	  if( dataArr[0] && dataArr[1] )
+		    	    names.push( {Name: dataArr[0], Accessible:dataArr[1]} ); 
 		     }
+		     $scope.addList = [];
+				 $scope.addList.length = 0;
+				 for( var i = 0, j=names.length; i<j; i++){
+				   $scope.addList.push(names[i]); 
+				 }
 		     $scope.addAdded($scope.fPdfs); 
 		  });
 		}
@@ -181,25 +186,24 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		  names = [];
 		  $http.get(gurl).success( function(data){
 		  
-		    names = data.split('*'); 
-		    for( var i = 0, j = names.length - 1; j >= i; j--){
-		      if( names[j] == "" || names[j] == 'Name' || names[j] == "*"){
-		        names.splice(j, 1);
-		      }
-		    }
+		    	var csvdata = data.split('*'); 
+		    	for( var i = 0, j = csvdata.length; i<j; i++){
+		    		var dataArr = csvdata[i].split('@');
+		    		names.push( {Name: dataArr[0], Accessible:dataArr[1]} ); 
+		    	}
+		    
 		    
 		    /* create a backup list of the current selections
 		     * loop through names and remove duplicates from 
 		     * selections.
 		     * combine remainder with new list*/
 		    var addBackup = $scope.addList;
-		    console.log (names);
 		    for( var i = 0, j = names.length; i < j; i++){
 		      for(var n = 0, m = addBackup.length; n < m; n++){
 		      
 		        var theName = addBackup[n] ? addBackup[n].Name : 'Gibberish';
 		      
-		        if( names[i] == theName){
+		        if( names[i].Name == theName){
 		          addBackup.splice(n, 1);
 		        }
 		      }
@@ -207,12 +211,12 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		    
 		    for( var i in addBackup){
 		      if(addBackup[i])
-		        names.push( addBackup[i].Name );
+		        names.push( {name: addBackup[i].Name, accessible: addBackup[i].Accessible} );
 		    }
 		    
 		    $scope.addList = []
 		    for( var i in names)
-		      $scope.addList.push({Name: names[i]})
+		      $scope.addList.push(names[i])
 		      
 		    $scope.addAdded($scope.fPdfs);
 		    

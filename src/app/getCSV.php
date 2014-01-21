@@ -13,8 +13,13 @@
       if( file_exists($this->url)){
         $file = fopen($this->url, "r");
         
+        $count = 0;
 				while (($this->csvdata = fgetcsv($file, 12000, ",")) !== FALSE) {
-						$this->names[] = $this->csvdata[0];
+						if( $count > 0){
+							$accessible = ($this->csvdata[1]) ? 1 : 0; 
+							$this->names[] = $this->csvdata[0]."@".$accessible;
+						}
+						$count++;
 				}
 
         fclose($file); 

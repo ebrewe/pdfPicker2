@@ -83,7 +83,7 @@
           <td class="td-excerpt" ng-click="toggleAdded(pdf)" ng-class="{'visible': titleVisible, 'hidden': !titleVisible}"  ng-bind-html="pdf.Title"></td>
           <td class="td-excerpt" ng-click="toggleAdded(pdf)" ng-class="{'visible': descriptionVisible, 'hidden': !descriptionVisible}" ng-bind-html="pdf.Description"></td>
           <td ng-click="toggleAdded(pdf)" ng-class="{'visible': ownerVisible, 'hidden': !ownerVisible}">{{(pdf.ContentContact && hasData(pdf.ContentContact)) ? pdf.ContentContact : '-'}}</td>
-          <td ng-class="{'visible': accessibleVisible, 'hidden': !accessibleVisible}"><input type="checkbox" ng-model="pdf.Accessible" /></td>
+          <td ng-class="{'visible': accessibleVisible, 'hidden': !accessibleVisible}"><input type="checkbox" ng-model="pdf.Accessible" ng-checked="pdf.Accessible" /></td>
           <td ng-class="{'visible': contentPlanVisible, 'hidden': !contentPlanVisible}"><input type="checkbox" ng-model="pdf.ContentPlan"/></td>
           <td ng-click="toggleAdded(pdf)" ng-class="{'visible': otherLanguageVisible, 'hidden': !otherLanguageVisible}">{{(pdf.HasTranslationLang && hasData(pdf.HasTranslationLang) )? pdf.HasTranslationLang : '-'}}</td>
           <td class="td-excerpt" ng-click="toggleAdded(pdf)" ng-class="{'visible': keywordsVisible, 'hidden': !keywordsVisible}"  ng-bind-html="pdf.Keywords"></td>
