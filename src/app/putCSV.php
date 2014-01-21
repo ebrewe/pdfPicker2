@@ -25,7 +25,7 @@
   echo 'kewl';
   */
   $list = array();
-  $list[0] = array('file_name', 'accessible', 'title', 'description', 'publish_date');
+  $list[0] = array('file_name', 'accessible', 'title', 'description', 'keywords', 'publish_date');
     $count = 1;
   foreach( $data as $key=>$value){
   
@@ -43,6 +43,7 @@
 				$list[$c][] = $value->Accessible;
 				$list[$c][] = $value->Title;
 				$list[$c][] = $value->Description;
+				$list[$c][] = $value->Keywords;
 				$list[$c][] = $value->PublishDate; 
 			}
   }

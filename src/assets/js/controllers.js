@@ -38,7 +38,10 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 							value.toAdd = true;
 							
 							if(!value.Accessible){
-								value.Accessible = 'false';
+								value.Accessible = false;
+							}
+							if(!value.ContentPlan){
+								value.ContentPlan = false;
 							}
 							rets.push(value);
 					});
@@ -172,7 +175,6 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		}
 		
 		$scope.rgetCSV = function(){
-		    console.log( 'hit save', $scope.addList );
 		  /* rget is Reconciling get. Get the file,
 		  check it against the current selected list and merge */
 		  var gurl = 'app/getCSV.php',
@@ -191,7 +193,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		     * selections.
 		     * combine remainder with new list*/
 		    var addBackup = $scope.addList;
-		    
+		    console.log (names);
 		    for( var i = 0, j = names.length; i < j; i++){
 		      for(var n = 0, m = addBackup.length; n < m; n++){
 		      
@@ -224,6 +226,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		  
 		  var purl = 'app/putCSV.php',
 		  postData = $scope.addList;
+		  console.log(postData); 
 		  
 		  $http({
             url: purl,
