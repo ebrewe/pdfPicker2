@@ -24,12 +24,14 @@
 				$list[$c][] = $value->ContentContact;
 				$list[$c][] = $value->Keywords;
 				$list[$c][] = $value->PublishDate; 
+				echo $value->Keywords;
 			}
   }
   $flist = array_filter($list);
- // print_r($flist);
+  print_r($flist);
   
   $fp = fopen('data/MNR_exported_pdfs.csv', 'w');
+  
 
 	foreach ($flist as $fields) {
 			fputcsv($fp, $fields);
