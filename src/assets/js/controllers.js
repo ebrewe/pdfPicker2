@@ -37,6 +37,9 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
 				  angular.forEach(list, function(value, key){
 							value.toAdd = true;
 							
+							if(!value.Selected)
+							  value.Selected = false; 
+							
 							if(!value.Accessible){
 								value.Accessible = false;
 							}
@@ -53,9 +56,18 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
 							/*value.Description = $scope.getExcerpt(value.Description, $scope.excerptLimit, true)     
 							value.Title = $scope.getExcerpt(value.Title, $scope.excerptLimit, true)  
 							value.Keywords = $scope.getExcerpt(value.Keywords, $scope.excerptLimit, true) */  
+							
+							
+							if(!value.Selected)
+							  value.Selected = false; 
+							
 							if(!value.Accessible){
-								value.Accessible = 'false';
+								value.Accessible = false;
 							}
+							if(!value.ContentPlan){
+								value.ContentPlan = false;
+							}
+							
 							rets.push(value);
 						}
 					});
@@ -192,6 +204,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
 		  names = [];
 		  $http.get(gurl).success( function(data){
 		  
+		      var addBackup = $scope.addList;
 		    	var csvdata = data.split('*'); 
 		    	for( var i = 0, j = csvdata.length; i<j; i++){
 		    		var dataArr = csvdata[i].split('$$');
@@ -203,12 +216,10 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
 		     * loop through names and remove duplicates from 
 		     * selections.
 		     * combine remainder with new list*/
-		    var addBackup = $scope.addList;
 		    for( var i = 0, j = names.length; i < j; i++){
 		      for(var n = 0, m = addBackup.length; n < m; n++){
 		      
 		        var theName = addBackup[n] ? addBackup[n].Name : 'Gibberish';
-		      
 		        if( names[i].Name == theName){
 		          addBackup.splice(n, 1);
 		        }
@@ -217,12 +228,14 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
 		    
 		    for( var i in addBackup){
 		      if(addBackup[i])
-		        names.push( {name: addBackup[i].Name, accessible: addBackup[i].Accessible} );
+		        names.push( {Name: addBackup[i].Name, Accessible: addBackup[i].Accessible, toAdd: false, Description:addBackup[i].Description, Title:addBackup[i].Title, ContentContact:addBackup[i].ContentContact} );
 		    }
 		    
 		    $scope.addList = []
-		    for( var i in names)
+		    for( var i in names){
 		      $scope.addList.push(names[i])
+		      console.log ('backups: ', $scope.addList);
+		    }
 		      
 		    $scope.addAdded($scope.fPdfs);
 		    
@@ -275,6 +288,23 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
 		/*synchronization*/
 		$scope.synced = false;
 		
+		/*select and export*/
+		$scope.allSelected = false;
+		
+		$scope.selectAll = function(){
+			console.log( 'clicked!');
+			if( $scope.allSelected){
+					angular.forEach($scope.fPdfs, function(item){
+						item.Selected = false;
+					});
+			}else{
+					angular.forEach($scope.fPdfs, function(item){
+						item.Selected = true;
+					});
+			}
+			$scope.Selected = !$scope.Selected;
+		}
+		
 		
 		/* bootstrap pagination controls */
 		
@@ -304,6 +334,7 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
 		$scope.keywordsVisible = false
 		$scope.publishedVisible = true
 		$scope.modifiedVisible = true
+		$scope.selectVisible = true
 		
 		$scope.toggleColumn = function( column ){
 		  $scope[column] = ! $scope[column];
@@ -354,7 +385,9 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
 		/*watch addlist changes*/
 		$scope.$watch('addList', function(newValue, oldValue){
 		  console.log('watchchange', newValue, oldValue);
-		  console.log(oldValue.length, newValue.length);
+		  if( newValue < oldValue){
+		  	$scope.addList = oldValue;
+		  }
 		})
   
   }])
