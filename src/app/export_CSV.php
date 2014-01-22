@@ -29,12 +29,12 @@
   $flist = array_filter($list);
  // print_r($flist);
   
-  $fp = fopen('data/included_pdfs.csv', 'w');
+  $fp = fopen('data/MNR_exported_pdfs.csv', 'w');
 
 	foreach ($flist as $fields) {
 			fputcsv($fp, $fields);
 	}
 	
 	fclose($fp);
-  
+	echo dirname(__FILE__)."/data/MNR_exported_pdfs.csv"
 ?>
