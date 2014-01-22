@@ -106,6 +106,12 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 							if( v.Accessible==1 ){
 							  $scope.fPdfs[lk].Accessible = true; 
 							}
+							if(v.Title)
+								$scope.fPdfs[lk].Title = v.Title;
+							if(v.Description)
+								$scope.fPdfs[lk].Description = v.Description;
+							if(v.ContentContact)
+								$scope.fPdfs[lk].ContentContact = v.ContentContact;
 							$scope.addList[k] = $scope.fPdfs[lk]; 
 						}
 					});
@@ -166,9 +172,9 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		     names = [];
 		  
 		     for( var i = 0, j= csvdata.length; i<j; i++){
-		     	  var dataArr = csvdata[i].split('@');
+		     	  var dataArr = csvdata[i].split('$$');
 		     	  if( dataArr[0] && dataArr[1] )
-		    	    names.push( {Name: dataArr[0], Accessible:dataArr[1]} ); 
+		    	    names.push( {Name: dataArr[0], Accessible:dataArr[1], Title:dataArr[2], Description:dataArr[3], ContentContact:dataArr[4]} ); 
 		     }
 		     $scope.addList = [];
 				 $scope.addList.length = 0;
@@ -188,8 +194,8 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		  
 		    	var csvdata = data.split('*'); 
 		    	for( var i = 0, j = csvdata.length; i<j; i++){
-		    		var dataArr = csvdata[i].split('@');
-		    		names.push( {Name: dataArr[0], Accessible:dataArr[1]} ); 
+		    		var dataArr = csvdata[i].split('$$');
+		    		names.push( {Name: dataArr[0], Accessible:dataArr[1], Title:dataArr[2], Description:dataArr[3], ContentContact:dataArr[4]} ); 
 		    	}
 		    
 		    

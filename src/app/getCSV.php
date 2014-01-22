@@ -16,8 +16,12 @@
         $count = 0;
 				while (($this->csvdata = fgetcsv($file, 12000, ",")) !== FALSE) {
 						if( $count > 0){
+						  $file_name = utf8_decode($this->csvdata[0]);
 							$accessible = ($this->csvdata[1]) ? 1 : 0; 
-							$this->names[] = $this->csvdata[0]."@".$accessible;
+							$title = utf8_decode($this->csvdata[2]); 
+							$description = utf8_decode($this->csvdata[3]); 
+							$contact = utf8_decode($this->csvdata[4]); 
+							$this->names[] = $file_name."$$".$accessible."$$".$title."$$".$description."$$".$contact;
 						}
 						$count++;
 				}

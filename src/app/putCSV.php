@@ -43,6 +43,7 @@
 				$list[$c][] = $value->Accessible;
 				$list[$c][] = $value->Title;
 				$list[$c][] = $value->Description;
+				$list[$c][] = $value->ContentContact;
 				$list[$c][] = $value->Keywords;
 				$list[$c][] = $value->PublishDate; 
 			}
