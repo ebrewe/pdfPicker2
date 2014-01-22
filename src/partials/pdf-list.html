@@ -47,8 +47,8 @@
 			</div>
       <div class="col-md-2 save-buttons">
         <p class="save-message"><i class="fa fa-check-circle-o"></i> Saved Selections</p>
-				<button ng-click="saveCSV()" class="btn btn-success">Save</button>
-				<button ng-click="rgetCSV()" class="btn btn-default">Open</button>
+				<button ng-click="saveCSV()" class="btn btn-success" ng-disabled="synced == false" title="{{synced ? 'Save List' : 'Sync before you save!'}}">Save</button>
+				<button ng-click="rgetCSV()" class="btn btn-default"><i class="fa fa-refresh"></i> Sync</button>
 		  </div>
     </div>
     

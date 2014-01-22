@@ -2,8 +2,8 @@
 
 var pdfControllers = angular.module('pdfControllers', ['ngSanitize']);
 
-pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
-  function($scope, $http){
+pdfControllers.controller('PdfListCtrl', ['$scope', '$http', '$timeout',
+  function($scope, $http, $timeout){
     $scope.tableLoaded = false;
     $http.get('app/data/mnr_all-v3.xml')
     .success( function(data){
@@ -226,7 +226,8 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		      
 		    $scope.addAdded($scope.fPdfs);
 		    
-		    
+		    $scope.synced = true; 
+		    $timeout( function(){ $scope.synced = false;}, 10000); 
 		    		    
 		  });
 		}
@@ -270,6 +271,10 @@ pdfControllers.controller('PdfListCtrl', ['$scope', '$http',
 		  var newPath = path.split('public://mnr_docs/')[1];
 		  return $scope.defaultPath+newPath;
 		}
+		
+		/*synchronization*/
+		$scope.synced = false;
+		
 		
 		/* bootstrap pagination controls */
 		
